@@ -10,10 +10,10 @@ import { Idioma } from './idioma.entity';
 import { Clasificacion } from './clasificacion.entity';
 import { Genero } from './genero.entity';
 
-@Entity('pelicula') // usa el nombre de tabla que tengas
+@Entity('pelicula') 
 export class Pelicula {
   @PrimaryGeneratedColumn()
-  id: number; // <-- nombre estándar, evita problemas en services
+  id: number; 
 
   @Column()
   titulo: string;
@@ -29,6 +29,9 @@ export class Pelicula {
 
   @Column({ type: 'text', nullable: true })
   sinopsis: string;
+
+  @Column({ type: 'text', nullable: true })
+  url: string;
 
   // Relaciones (FK en Pelicula) => ManyToOne
   @ManyToOne(() => Idioma, (idioma) => idioma.peliculas, { nullable: false })

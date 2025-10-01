@@ -76,16 +76,16 @@ export class PeliculaService {
   }
 
   async getAllPeliculas(page = 1, quantity = 10): Promise<PeliculaResponse[]> {
-    const skip = (page - 1) * quantity;
-    const pelis = await this.peliculaRepo.find({
-      relations: { idioma: true, genero: true, clasificacion: true, estado: true },
-      order: { titulo: 'ASC' },
-      skip,
-      take: quantity,
-    });
-    return pelis.map((p) => this.toResponse(p));
-  }
-
+  const skip = (page - 1) * quantity;
+  const pelis = await this.peliculaRepo.find({
+    relations: { idioma: true, genero: true, clasificacion: true, estado: true },
+    where: { estado: { nombre: 'En Cartelera' } }, // filtro por estado
+    order: { titulo: 'ASC' },
+    skip,
+    take: quantity,
+  });
+  return pelis.map((p) => this.toResponse(p));
+}
   async getPeliculaById(id: number): Promise<PeliculaResponse> {
     const p = await this.peliculaRepo.findOne({
       where: { id },
