@@ -1,63 +1,61 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    ManyToOne,
+    JoinColumn,
 } from 'typeorm';
 import { Estado } from './estado.entity';
 import { Idioma } from './idioma.entity';
 import { Clasificacion } from './clasificacion.entity';
 import { Genero } from './genero.entity';
 
-@Entity('pelicula') 
+@Entity('pelicula')
 export class Pelicula {
-  @PrimaryGeneratedColumn()
-  id: number; 
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column()
-  titulo: string;
+    @Column()
+    titulo: string;
 
-  @Column({ nullable: true })
-  director: string;
+    @Column({ nullable: true })
+    director: string;
 
-  @Column()
-  duracion: number; // minutos
+    @Column()
+    duracion: number; // minutos
 
-  @Column({ type: 'date', nullable: true })
-  fechaEstreno: Date | null;
+    @Column({ nullable: true })
+    fechaEstreno?: string;
 
-  @Column({ type: 'text', nullable: true })
-  sinopsis: string;
+    @Column({ type: 'text', nullable: true })
+    sinopsis?: string;
 
-  @Column({ type: 'text', nullable: true })
-  url: string;
+    @Column({ type: 'text', nullable: true })
+    urlImagen?: string;
 
-  // Relaciones (FK en Pelicula) => ManyToOne
-  @ManyToOne(() => Idioma, (idioma) => idioma.peliculas, { nullable: false })
-  @JoinColumn({ name: 'idioma_id' })
-  idioma: Idioma;
+    // Relaciones (FK en Pelicula) => ManyToOne
+    @ManyToOne(() => Idioma, (idioma) => idioma.peliculas, { nullable: false })
+    @JoinColumn({ name: 'idioma_id' })
+    idioma: Idioma;
 
+    @ManyToOne(() => Genero, { nullable: false, eager: false })
+    @JoinColumn({ name: 'genero_id' })
+    genero: Genero;
 
-  @ManyToOne(() => Genero, { nullable: false, eager: false })
-  @JoinColumn({ name: 'genero_id' })
-  genero: Genero;
+    @ManyToOne(() => Clasificacion, { nullable: false, eager: false })
+    @JoinColumn({ name: 'clasificacion_id' })
+    clasificacion: Clasificacion;
 
-  @ManyToOne(() => Clasificacion, { nullable: false, eager: false })
-  @JoinColumn({ name: 'clasificacion_id' })
-  clasificacion: Clasificacion;
+    @ManyToOne(() => Estado, { nullable: false, eager: false })
+    @JoinColumn({ name: 'estado_id' })
+    estado: Estado;
 
-  @ManyToOne(() => Estado, { nullable: false, eager: false })
-  @JoinColumn({ name: 'estado_id' })
-  estado: Estado;
+    ponerEnCartelera(estado: Estado) {
+        this.estado = estado; // el service se encarga de traer el Estado "En Cartelera"
+    }
 
-  // Si querés conservar métodos de dominio, mejor trabajar asignando el Estado
-  ponerEnCartelera(estado: Estado) {
-    this.estado = estado; // el service se encarga de traer el Estado "En Cartelera"
-  }
-
-  sacarDeCartelera(estado: Estado) {
-    this.estado = estado; // idem "Fuera de Cartelera"
-  }
+    sacarDeCartelera(estado: Estado) {
+        this.estado = estado; // idem "Fuera de Cartelera"
+    }
 }
 

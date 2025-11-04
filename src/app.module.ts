@@ -24,17 +24,24 @@ import { EstadoService } from './estado/estado.service';
 import { ClasificacionService } from './clasificacion/clasificacion.service';
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      database: 'base_promociones',
-      username: 'postgres',
-      entities: [Pelicula, Idioma, Genero, Estado, Clasificacion], 
-      synchronize: true,
-    }),PeliculaModule, IdiomaModule, GeneroModule, EstadoModule, ClasificacionModule],
-  controllers: [AppController,PeliculaController, IdiomaController, GeneroController, EstadoController, ClasificacionController],
-  providers: [AppService, PeliculaService, IdiomaService, GeneroService, EstadoService, ClasificacionService],
+    imports: [TypeOrmModule.forRoot({
+        type: 'postgres',
+        host: 'localhost',
+        port: 5432,
+        database: 'mspeliculas',
+        username: 'postgres',
+        password: 'grupou',
+        entities: [Pelicula, Idioma, Genero, Estado, Clasificacion],
+        synchronize: true,
+    }),
+        PeliculaModule,
+        IdiomaModule,
+        GeneroModule,
+        EstadoModule,
+        ClasificacionModule
+    ],
+    controllers: [AppController],
+    providers: [AppService],
 })
 export class AppModule {
 }
