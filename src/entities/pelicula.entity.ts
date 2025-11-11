@@ -32,7 +32,10 @@ export class Pelicula {
 
   @Column({ type: 'text', nullable: true })
   url: string;
-
+  
+  @Column()
+  empleadoId: number;
+  
   // Relaciones (FK en Pelicula) => ManyToOne
   @ManyToOne(() => Idioma, (idioma) => idioma.peliculas, { nullable: false })
   @JoinColumn({ name: 'idioma_id' })

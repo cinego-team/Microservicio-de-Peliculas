@@ -19,3 +19,4 @@ import { PeliculaService } from './pelicula.service';
   exports: [PeliculaService],
 })
 export class PeliculaModule {}
+
