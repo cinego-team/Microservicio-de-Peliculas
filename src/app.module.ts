@@ -14,6 +14,7 @@ import { Estado } from './entities/estado.entity';
 import { Clasificacion } from './entities/clasificacion.entity';
 
 @Module({
+<<<<<<< HEAD
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -33,5 +34,25 @@ import { Clasificacion } from './entities/clasificacion.entity';
   ],
   controllers: [AppController],
   providers: [AppService],
+=======
+    imports: [TypeOrmModule.forRoot({
+        type: 'postgres',
+        host: 'localhost',
+        port: 5432,
+        database: 'mspeliculas',
+        username: 'postgres',
+        password: 'grupou',
+        entities: [Pelicula, Idioma, Genero, Estado, Clasificacion],
+        synchronize: true,
+    }),
+        PeliculaModule,
+        IdiomaModule,
+        GeneroModule,
+        EstadoModule,
+        ClasificacionModule
+    ],
+    controllers: [AppController],
+    providers: [AppService],
+>>>>>>> e1c38d2911f19e25e8671931cb08f1dfcc8c2d33
 })
 export class AppModule {}

@@ -2,14 +2,14 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinColum
 import { Pelicula } from './pelicula.entity';
 
 
-@Entity('Genero')
-export class Genero{
-  @PrimaryGeneratedColumn()
-  idGenero: number;
+@Entity('genero')
+export class Genero {
+    @PrimaryGeneratedColumn()
+    idGenero: number;
 
-  @Column()
-  nombre: string;
-  
-  @OneToMany(() => Pelicula, (pelicula) => pelicula.genero)
-  peliculas: Pelicula[];
+    @Column()
+    nombre: string;
+
+    @OneToMany(() => Pelicula, (pelicula) => pelicula.genero)
+    peliculas: Pelicula[];
 }
