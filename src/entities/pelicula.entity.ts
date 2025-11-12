@@ -33,7 +33,7 @@ export class Pelicula {
     @Column({ type: 'text', nullable: true })
     url?: string;
 
-    @Column()
+    @Column({ name: 'empleado_responsable' })
     empleadoId: number;
 
     // Relaciones (FK en Pelicula) => ManyToOne
