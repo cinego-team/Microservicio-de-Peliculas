@@ -3,7 +3,7 @@ import { Pelicula } from './pelicula.entity';
 
 @Entity('idioma')
 export class Idioma {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn({ name: 'id' })
     idIdioma: number;
 
     @Column()

@@ -24,32 +24,22 @@ export class Pelicula {
     @Column()
     duracion: number; // minutos
 
-    @Column({ nullable: true })
+    @Column({ nullable: true, name: 'fecha_estreno' })
     fechaEstreno?: string;
 
     @Column({ type: 'text', nullable: true })
     sinopsis?: string;
 
-<<<<<<< HEAD
-  @Column({ type: 'text', nullable: true })
-  url: string;
-  
-  @Column()
-  empleadoId: number;
-  
-  // Relaciones (FK en Pelicula) => ManyToOne
-  @ManyToOne(() => Idioma, (idioma) => idioma.peliculas, { nullable: false })
-  @JoinColumn({ name: 'idioma_id' })
-  idioma: Idioma;
-=======
     @Column({ type: 'text', nullable: true })
-    urlImagen?: string;
+    url?: string;
+
+    @Column()
+    empleadoId: number;
 
     // Relaciones (FK en Pelicula) => ManyToOne
     @ManyToOne(() => Idioma, (idioma) => idioma.peliculas, { nullable: false })
     @JoinColumn({ name: 'idioma_id' })
     idioma: Idioma;
->>>>>>> e1c38d2911f19e25e8671931cb08f1dfcc8c2d33
 
     @ManyToOne(() => Genero, { nullable: false, eager: false })
     @JoinColumn({ name: 'genero_id' })

@@ -4,7 +4,7 @@ import { Pelicula } from './pelicula.entity';
 
 @Entity('clasificacion')
 export class Clasificacion {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn({ name: 'id' })
     idClasificacion: number;
 
     @Column()
