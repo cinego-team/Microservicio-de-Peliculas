@@ -7,7 +7,7 @@ export class Genero {
     @PrimaryGeneratedColumn({ name: 'id' })
     idGenero: number;
 
-    @Column()
+    @Column({ type: 'varchar', length: 50 })
     nombre: string;
 
     @OneToMany(() => Pelicula, (pelicula) => pelicula.genero)

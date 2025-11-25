@@ -15,16 +15,16 @@ export class Pelicula {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ type: 'varchar', length: 100 })
     titulo: string;
 
-    @Column({ nullable: true })
+    @Column({ type: 'varchar', length: 100 })
     director: string;
 
     @Column()
     duracion: number; // minutos
 
-    @Column({ nullable: true, name: 'fecha_estreno' })
+    @Column({ nullable: true, name: 'fecha_estreno', length: 10 })
     fechaEstreno?: string;
 
     @Column({ type: 'text', nullable: true })
