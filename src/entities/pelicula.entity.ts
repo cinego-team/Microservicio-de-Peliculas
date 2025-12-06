@@ -28,29 +28,29 @@ export class Pelicula {
     fechaEstreno?: string;
 
     @Column({ type: 'text', nullable: true })
-    sinopsis?: string;
+    sinopsis: string;
 
     @Column({ type: 'text', nullable: true })
-    url?: string;
+    urlImagen: string;
 
     @Column({ name: 'empleado_responsable' })
     empleadoId: number;
 
     // Relaciones (FK en Pelicula) => ManyToOne
     @ManyToOne(() => Idioma, (idioma) => idioma.peliculas, { nullable: false })
-    @JoinColumn({ name: 'idioma_id' })
+    @JoinColumn({ name: 'idioma' })
     idioma: Idioma;
 
     @ManyToOne(() => Genero, { nullable: false, eager: false })
-    @JoinColumn({ name: 'genero_id' })
+    @JoinColumn({ name: 'genero' })
     genero: Genero;
 
     @ManyToOne(() => Clasificacion, { nullable: false, eager: false })
-    @JoinColumn({ name: 'clasificacion_id' })
+    @JoinColumn({ name: 'clasificacion' })
     clasificacion: Clasificacion;
 
     @ManyToOne(() => Estado, { nullable: false, eager: false })
-    @JoinColumn({ name: 'estado_id' })
+    @JoinColumn({ name: 'estado' })
     estado: Estado;
 
     ponerEnCartelera(estado: Estado) {
@@ -61,4 +61,3 @@ export class Pelicula {
         this.estado = estado; // idem "Fuera de Cartelera"
     }
 }
-
