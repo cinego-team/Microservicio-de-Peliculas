@@ -13,11 +13,8 @@ export class PeliculaController {
     }
 
     @Get()
-    getAll(
-        @Query('page') page = '1',
-        @Query('quantity') quantity = '10',
-    ) {
-        return this.service.getAllPeliculas(Number(page), Number(quantity));
+    getAll() {
+        return this.service.getAllPeliculas();
     }
 
     @Get(':id')

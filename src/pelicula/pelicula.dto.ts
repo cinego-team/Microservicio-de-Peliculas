@@ -16,13 +16,14 @@ export class PeliculaInput {
 export class PeliculaResponse {
     id: number;
     titulo: string;
-    sinopsis: string;
     director: string;
     duracion: number;
     fechaEstreno: string;
+    sinopsis: string;
+    url: string;
+    empleadoResponsable: number;
     idioma: string;
     genero: string;
     clasificacion: string;
     estado: string;
-    urlImagen: string;
 }
