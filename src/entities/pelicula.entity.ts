@@ -38,19 +38,19 @@ export class Pelicula {
 
     // Relaciones (FK en Pelicula) => ManyToOne
     @ManyToOne(() => Idioma, (idioma) => idioma.peliculas, { nullable: false })
-    @JoinColumn({ name: 'idioma' })
+    @JoinColumn({ name: 'idioma_id' })
     idioma: Idioma;
 
     @ManyToOne(() => Genero, { nullable: false, eager: false })
-    @JoinColumn({ name: 'genero' })
+    @JoinColumn({ name: 'genero_id' })
     genero: Genero;
 
     @ManyToOne(() => Clasificacion, { nullable: false, eager: false })
-    @JoinColumn({ name: 'clasificacion' })
+    @JoinColumn({ name: 'clasificacion_id' })
     clasificacion: Clasificacion;
 
     @ManyToOne(() => Estado, { nullable: false, eager: false })
-    @JoinColumn({ name: 'estado' })
+    @JoinColumn({ name: 'estado_id' })
     estado: Estado;
 
     ponerEnCartelera(estado: Estado) {
