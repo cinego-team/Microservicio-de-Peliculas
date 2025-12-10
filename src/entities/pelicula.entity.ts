@@ -30,7 +30,7 @@ export class Pelicula {
     @Column({ type: 'text', nullable: true })
     sinopsis: string;
 
-    @Column({ type: 'text', nullable: true })
+    @Column({ type: 'text', nullable: true, name: 'url_imagen' })
     urlImagen: string;
 
     @Column({ name: 'empleado_responsable' })
