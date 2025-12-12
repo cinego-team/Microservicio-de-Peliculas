@@ -15,28 +15,28 @@ import { IdiomaInput } from './idioma.dto';
 
 @Controller('idioma')
 export class IdiomaController {
-    constructor(private readonly service: IdiomaService) { }
+    constructor(private readonly service: IdiomaService) {}
 
-    @Post()
+    @Post('new/admin')
     new(@Body() dto: IdiomaInput) {
         return this.service.newIdioma(dto);
     }
 
-    @Get()
-    getAll(
-        @Query('page') page = '1',
-        @Query('quantity') quantity = '10',
-    ) {
+    @Get('admin')
+    getAll(@Query('page') page = '1', @Query('quantity') quantity = '10') {
         return this.service.getAllIdiomas(Number(page), Number(quantity));
     }
 
-    @Get(':id')
+    @Get(':id/admin')
     getById(@Param('id', ParseIntPipe) id: number) {
         return this.service.getIdiomaById(id);
     }
 
-    @Put(':id')
-    updateFull(@Param('id', ParseIntPipe) id: number, @Body() dto: IdiomaInput) {
+    @Put(':id/admin')
+    updateFull(
+        @Param('id', ParseIntPipe) id: number,
+        @Body() dto: IdiomaInput,
+    ) {
         return this.service.updateIdioma(id, dto);
     }
 
@@ -48,7 +48,7 @@ export class IdiomaController {
         return this.service.partialUpdateIdioma(id, dto);
     }
 
-    @Delete(':id')
+    @Delete(':id/admin')
     delete(@Param('id', ParseIntPipe) id: number) {
         return this.service.deleteIdiomaById(id);
     }
