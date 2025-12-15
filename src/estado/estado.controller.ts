@@ -17,22 +17,22 @@ import { EstadoInput } from './estado.dto';
 export class EstadoController {
     constructor(private readonly service: EstadoService) {}
 
-    @Post()
+    @Post('admin/new')
     new(@Body() dto: EstadoInput) {
         return this.service.newEstado(dto);
     }
 
-    @Get('/admin')
+    @Get('admin/all')
     getAll(@Query('page') page = '1', @Query('quantity') quantity = '10') {
         return this.service.getAllEstados(Number(page), Number(quantity));
     }
 
-    @Get(':id/admin')
+    @Get('admin/:id')
     getById(@Param('id', ParseIntPipe) id: number) {
         return this.service.getEstadoById(id);
     }
 
-    @Put(':id/admin')
+    @Put('admin/:id')
     updateFull(
         @Param('id', ParseIntPipe) id: number,
         @Body() dto: EstadoInput,
@@ -48,7 +48,7 @@ export class EstadoController {
         return this.service.partialUpdateEstado(id, dto);
     }
 
-    @Delete(':id/admin')
+    @Delete('admin/:id')
     delete(@Param('id', ParseIntPipe) id: number) {
         return this.service.deleteEstadoById(id);
     }

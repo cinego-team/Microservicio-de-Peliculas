@@ -17,12 +17,12 @@ import { ClasificacionInput } from './clasificacion.dto';
 export class ClasificacionController {
     constructor(private readonly service: ClasificacionService) {}
 
-    @Post('new')
+    @Post('admin/new')
     new(@Body() dto: ClasificacionInput) {
         return this.service.newClasificacion(dto);
     }
 
-    @Get('/admin')
+    @Get('admin/all')
     getAll(@Query('page') page = '1', @Query('quantity') quantity = '10') {
         return this.service.getAllClasificaciones(
             Number(page),
@@ -30,12 +30,12 @@ export class ClasificacionController {
         );
     }
 
-    @Get(':id/admin')
+    @Get('admin/:id')
     getById(@Param('id', ParseIntPipe) id: number) {
         return this.service.getClasificacionById(id);
     }
 
-    @Put(':id/admin')
+    @Put('admin/:id')
     updateFull(
         @Param('id', ParseIntPipe) id: number,
         @Body() dto: ClasificacionInput,
@@ -51,7 +51,7 @@ export class ClasificacionController {
         return this.service.partialUpdateClasificacion(id, dto);
     }
 
-    @Delete(':id/admin')
+    @Delete('admin/:id')
     delete(@Param('id', ParseIntPipe) id: number) {
         return this.service.deleteClasificacionById(id);
     }

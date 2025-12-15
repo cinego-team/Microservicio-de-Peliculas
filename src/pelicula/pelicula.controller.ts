@@ -40,22 +40,16 @@ export class PeliculaController {
         return this.service.updatePelicula(id, dto);
     }
 
-    @Delete(':id/admin')
-    delete(@Param('id', ParseIntPipe) id: number) {
-        return this.service.deletePeliculaById(id);
-    }
-
     @Patch(':id/poner-en-cartelera')
     poner(@Param('id', ParseIntPipe) id: number) {
         return this.service.ponerEnCartelera(id);
     }
-
     @Patch(':id/sacar-de-cartelera')
     sacar(@Param('id', ParseIntPipe) id: number) {
         return this.service.sacarDeCartelera(id);
     }
     //metodos para empleado
-    @Get(':id/admin')
+    @Get(':admin/:id')
     getByIdAdmin(@Param('id', ParseIntPipe) id: number) {
         return this.service.getPeliculaByIdForAdmin(id);
     }
@@ -67,15 +61,19 @@ export class PeliculaController {
     getAllAdmin() {
         return this.service.getPeliculasCompleto();
     }
-    @Post('new/admin')
+    @Post('admin/new')
     newPelAdmin(@Body() dto: PeliculaInputAdmin) {
         return this.service.createPeliculaAdmin(dto);
     }
-    @Put(':id/admin')
+    @Put('admin/:id')
     updateFullAdmin(
         @Param('id', ParseIntPipe) id: number,
         @Body() dto: PeliculaInputAdmin,
     ) {
         return this.service.updatePeliculaAdmin(id, dto);
+    }
+    @Delete('admin/:id')
+    delete(@Param('id', ParseIntPipe) id: number) {
+        return this.service.deletePeliculaById(id);
     }
 }
