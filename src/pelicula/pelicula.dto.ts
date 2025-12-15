@@ -1,6 +1,5 @@
 // DTO para crear o actualizar una película
 export class PeliculaInput {
-    idioma: string;
     genero: string;
     clasificacion: string;
     estado: string;
@@ -20,9 +19,8 @@ export class PeliculaResponse {
     duracion: number;
     fechaEstreno: string;
     sinopsis: string;
-    url: string;
+    urlImagen: string;
     empleadoResponsable: number;
-    idioma: string;
     genero: string;
     clasificacion: string;
     estado: string;

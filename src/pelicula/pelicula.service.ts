@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Pelicula } from '../entities/pelicula.entity';
-import { Idioma } from '../entities/idioma.entity';
 import { Genero } from '../entities/genero.entity';
 import { Clasificacion } from '../entities/clasificacion.entity';
 import { Estado } from '../entities/estado.entity';
@@ -15,7 +14,6 @@ import { PeliculaInput, PeliculaResponse } from './pelicula.dto';
 export class PeliculaService {
     constructor(
         @InjectRepository(Pelicula) private peliculaRepo: Repository<Pelicula>,
-        @InjectRepository(Idioma) private idiomaRepo: Repository<Idioma>,
         @InjectRepository(Genero) private generoRepo: Repository<Genero>,
         @InjectRepository(Clasificacion)
         private clasificacionRepo: Repository<Clasificacion>,
@@ -30,9 +28,8 @@ export class PeliculaService {
             duracion: p.duracion,
             fechaEstreno: p.fechaEstreno ?? '',
             sinopsis: p.sinopsis ?? '',
-            url: p.urlImagen ?? '',
+            urlImagen: p.urlImagen ?? '',
             empleadoResponsable: p.empleadoId,
-            idioma: p.idioma?.nombre ?? '',
             genero: p.genero?.nombre ?? '',
             clasificacion: p.clasificacion?.nombre ?? '',
             estado: p.estado?.nombre ?? '',
@@ -40,8 +37,7 @@ export class PeliculaService {
     }
 
     private async resolveRelationsByIds(dto: PeliculaInput) {
-        const [idioma, genero, clasificacion, estado] = await Promise.all([
-            this.idiomaRepo.findOne({ where: { nombre: dto.idioma } }),
+        const [genero, clasificacion, estado] = await Promise.all([
             this.generoRepo.findOne({ where: { nombre: dto.genero } }),
             this.clasificacionRepo.findOne({
                 where: { nombre: dto.clasificacion },
@@ -49,12 +45,11 @@ export class PeliculaService {
             this.estadoRepo.findOne({ where: { nombre: dto.estado } }),
         ]);
 
-        if (!idioma) throw new Error('404 Idioma not found.');
         if (!genero) throw new Error('404 Genero not found.');
         if (!clasificacion) throw new Error('404 Clasificacion not found.');
         if (!estado) throw new Error('404 Estado not found.');
 
-        return { idioma, genero, clasificacion, estado };
+        return { genero, clasificacion, estado };
     }
 
     async newPelicula(datos: PeliculaInput): Promise<PeliculaResponse> {
@@ -75,7 +70,6 @@ export class PeliculaService {
         const saved = await this.peliculaRepo.findOne({
             where: { id: pelicula.id },
             relations: {
-                idioma: true,
                 genero: true,
                 clasificacion: true,
                 estado: true,
@@ -86,16 +80,11 @@ export class PeliculaService {
     }
 
     async getAllPeliculas(
-        page = 1,
-        quantity = 10,
     ): Promise<PeliculaResponse[]> {
-        const skip = (page - 1) * quantity;
         const pelis = await this.peliculaRepo.find({
-            relations: { idioma: true, genero: true, clasificacion: true, estado: true },
+            relations: { genero: true, clasificacion: true, estado: true },
             where: { estado: { nombre: 'EN CARTELERA' } }, // filtro por estado
             order: { titulo: 'ASC' },
-            skip,
-            take: quantity,
         });
         return pelis.map((p) => this.toResponse(p));
     }
@@ -103,7 +92,6 @@ export class PeliculaService {
         const p = await this.peliculaRepo.findOne({
             where: { id },
             relations: {
-                idioma: true,
                 genero: true,
                 clasificacion: true,
                 estado: true,
@@ -127,7 +115,6 @@ export class PeliculaService {
         p.director = datos.director;
         p.duracion = datos.duracion;
         p.fechaEstreno = datos.fechaEstreno;
-        p.idioma = rels.idioma;
         p.genero = rels.genero;
         p.clasificacion = rels.clasificacion;
         p.estado = rels.estado;
@@ -138,7 +125,6 @@ export class PeliculaService {
         const updated = await this.peliculaRepo.findOne({
             where: { id },
             relations: {
-                idioma: true,
                 genero: true,
                 clasificacion: true,
                 estado: true,
@@ -155,7 +141,6 @@ export class PeliculaService {
         const p = await this.peliculaRepo.findOne({
             where: { id },
             relations: {
-                idioma: true,
                 genero: true,
                 clasificacion: true,
                 estado: true,
@@ -170,13 +155,6 @@ export class PeliculaService {
         if (datos.fechaEstreno !== undefined)
             p.fechaEstreno = datos.fechaEstreno;
 
-        if (datos.idioma !== undefined) {
-            const idioma = await this.idiomaRepo.findOne({
-                where: { nombre: datos.idioma },
-            });
-            if (!idioma) throw new Error('404 Idioma not found.');
-            p.idioma = idioma;
-        }
         if (datos.genero !== undefined) {
             const genero = await this.generoRepo.findOne({
                 where: { nombre: datos.genero },
@@ -215,7 +193,6 @@ export class PeliculaService {
             where: { id },
             relations: {
                 estado: true,
-                idioma: true,
                 genero: true,
                 clasificacion: true,
             },
@@ -235,7 +212,6 @@ export class PeliculaService {
             where: { id },
             relations: {
                 estado: true,
-                idioma: true,
                 genero: true,
                 clasificacion: true,
             },

@@ -6,7 +6,6 @@ import {
     JoinColumn,
 } from 'typeorm';
 import { Estado } from './estado.entity';
-import { Idioma } from './idioma.entity';
 import { Clasificacion } from './clasificacion.entity';
 import { Genero } from './genero.entity';
 
@@ -37,9 +36,6 @@ export class Pelicula {
     empleadoId: number;
 
     // Relaciones (FK en Pelicula) => ManyToOne
-    @ManyToOne(() => Idioma, (idioma) => idioma.peliculas, { nullable: false })
-    @JoinColumn({ name: 'idioma_id' })
-    idioma: Idioma;
 
     @ManyToOne(() => Genero, { nullable: false, eager: false })
     @JoinColumn({ name: 'genero_id' })
