@@ -1,39 +1,54 @@
 import {
-    Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, ParseIntPipe,
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Patch,
+    Post,
+    Put,
+    Query,
+    ParseIntPipe,
 } from '@nestjs/common';
 import { EstadoService } from './estado.service';
 import { EstadoInput } from './estado.dto';
 
 @Controller('estado-pelicula')
 export class EstadoController {
-    constructor(private readonly service: EstadoService) { }
+    constructor(private readonly service: EstadoService) {}
 
     @Post()
     new(@Body() dto: EstadoInput) {
         return this.service.newEstado(dto);
     }
 
-    @Get()
+    @Get('/admin')
     getAll(@Query('page') page = '1', @Query('quantity') quantity = '10') {
         return this.service.getAllEstados(Number(page), Number(quantity));
     }
 
-    @Get(':id')
+    @Get(':id/admin')
     getById(@Param('id', ParseIntPipe) id: number) {
         return this.service.getEstadoById(id);
     }
 
-    @Put(':id')
-    updateFull(@Param('id', ParseIntPipe) id: number, @Body() dto: EstadoInput) {
+    @Put(':id/admin')
+    updateFull(
+        @Param('id', ParseIntPipe) id: number,
+        @Body() dto: EstadoInput,
+    ) {
         return this.service.updateEstado(id, dto);
     }
 
     @Patch(':id')
-    updatePartial(@Param('id', ParseIntPipe) id: number, @Body() dto: Partial<EstadoInput>) {
+    updatePartial(
+        @Param('id', ParseIntPipe) id: number,
+        @Body() dto: Partial<EstadoInput>,
+    ) {
         return this.service.partialUpdateEstado(id, dto);
     }
 
-    @Delete(':id')
+    @Delete(':id/admin')
     delete(@Param('id', ParseIntPipe) id: number) {
         return this.service.deleteEstadoById(id);
     }
