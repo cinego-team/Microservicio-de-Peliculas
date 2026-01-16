@@ -24,7 +24,7 @@ export class PeliculaService {
         @InjectRepository(Clasificacion)
         private clasificacionRepo: Repository<Clasificacion>,
         @InjectRepository(Estado) private estadoRepo: Repository<Estado>,
-    ) { }
+    ) {}
 
     private toResponse(p: Pelicula): PeliculaResponse {
         return {
@@ -85,8 +85,7 @@ export class PeliculaService {
         return this.toResponse(saved);
     }
 
-    async getAllPeliculas(
-    ): Promise<PeliculaResponse[]> {
+    async getAllPeliculas(): Promise<PeliculaResponse[]> {
         const pelis = await this.peliculaRepo.find({
             relations: {
                 genero: true,
@@ -290,7 +289,7 @@ export class PeliculaService {
                 nombre: pelicula.genero.nombre,
             },
             clasificacion: {
-                id: pelicula.clasificacion.idClasificacion,
+                id: pelicula.clasificacion.id,
                 nombre: pelicula.clasificacion.nombre,
             },
             estadoPelicula: {
@@ -300,11 +299,11 @@ export class PeliculaService {
 
             empleado: empleado
                 ? {
-                    id: empleado.id,
-                    legajo: empleado.legajo,
-                    nombre: empleado.nombre,
-                    apellido: empleado.apellido,
-                }
+                      id: empleado.id,
+                      legajo: empleado.legajo,
+                      nombre: empleado.nombre,
+                      apellido: empleado.apellido,
+                  }
                 : null,
         };
     }
@@ -370,7 +369,7 @@ export class PeliculaService {
                     },
 
                     clasificacion: {
-                        id: p.clasificacion.idClasificacion,
+                        id: p.clasificacion.id,
                         nombre: p.clasificacion.nombre,
                     },
 
@@ -381,11 +380,11 @@ export class PeliculaService {
 
                     empleado: empleado
                         ? {
-                            id: empleado.id,
-                            legajo: empleado.legajo,
-                            nombre: empleado.nombre,
-                            apellido: empleado.apellido,
-                        }
+                              id: empleado.id,
+                              legajo: empleado.legajo,
+                              nombre: empleado.nombre,
+                              apellido: empleado.apellido,
+                          }
                         : null,
                 };
             }),
@@ -399,7 +398,7 @@ export class PeliculaService {
             where: { idGenero: dto.genero.id },
         });
         const clasificacion = await this.clasificacionRepo.findOne({
-            where: { idClasificacion: dto.clasificacion.id },
+            where: { id: dto.clasificacion.id },
         });
         const estado = await this.estadoRepo.findOne({
             where: { idEstado: dto.estado.id },
@@ -441,7 +440,7 @@ export class PeliculaService {
             where: { idGenero: dto.genero.id },
         });
         const clasificacion = await this.clasificacionRepo.findOne({
-            where: { idClasificacion: dto.clasificacion.id },
+            where: { id: dto.clasificacion.id },
         });
         const estado = await this.estadoRepo.findOne({
             where: { idEstado: dto.estado.id },

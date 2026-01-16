@@ -19,6 +19,7 @@ export class ClasificacionController {
 
     @Post('admin/new')
     new(@Body() dto: ClasificacionInput) {
+        console.log('📦 BODY RECIBIDO:', dto);
         return this.service.newClasificacion(dto);
     }
 

@@ -17,6 +17,43 @@ import { PeliculaInput, PeliculaInputAdmin } from './pelicula.dto';
 export class PeliculaController {
     constructor(private readonly service: PeliculaService) {}
 
+    // ===== ADMIN =====
+
+    @Get('admin/all')
+    getAllAdmin() {
+        return this.service.getPeliculasCompleto();
+    }
+
+    @Get('admin/selec')
+    getAdmin() {
+        return this.service.getPeliculasParaSelec();
+    }
+
+    @Get('admin/:id')
+    getByIdAdmin(@Param('id', ParseIntPipe) id: number) {
+        return this.service.getPeliculaByIdForAdmin(id);
+    }
+
+    @Post('admin/new')
+    newPelAdmin(@Body() dto: PeliculaInputAdmin) {
+        return this.service.createPeliculaAdmin(dto);
+    }
+
+    @Put('admin/:id')
+    updateFullAdmin(
+        @Param('id', ParseIntPipe) id: number,
+        @Body() dto: PeliculaInputAdmin,
+    ) {
+        return this.service.updatePeliculaAdmin(id, dto);
+    }
+
+    @Delete('admin/:id')
+    delete(@Param('id', ParseIntPipe) id: number) {
+        return this.service.deletePeliculaById(id);
+    }
+
+    // ===== GENERALES =====
+
     @Post('new')
     new(@Body() dto: PeliculaInput) {
         return this.service.newPelicula(dto);
@@ -44,36 +81,9 @@ export class PeliculaController {
     poner(@Param('id', ParseIntPipe) id: number) {
         return this.service.ponerEnCartelera(id);
     }
+
     @Patch(':id/sacar-de-cartelera')
     sacar(@Param('id', ParseIntPipe) id: number) {
         return this.service.sacarDeCartelera(id);
-    }
-    //metodos para empleado
-    @Get(':admin/:id')
-    getByIdAdmin(@Param('id', ParseIntPipe) id: number) {
-        return this.service.getPeliculaByIdForAdmin(id);
-    }
-    @Get('admin/selec')
-    getAdmin() {
-        return this.service.getPeliculasParaSelec();
-    }
-    @Get('admin/all')
-    getAllAdmin() {
-        return this.service.getPeliculasCompleto();
-    }
-    @Post('admin/new')
-    newPelAdmin(@Body() dto: PeliculaInputAdmin) {
-        return this.service.createPeliculaAdmin(dto);
-    }
-    @Put('admin/:id')
-    updateFullAdmin(
-        @Param('id', ParseIntPipe) id: number,
-        @Body() dto: PeliculaInputAdmin,
-    ) {
-        return this.service.updatePeliculaAdmin(id, dto);
-    }
-    @Delete('admin/:id')
-    delete(@Param('id', ParseIntPipe) id: number) {
-        return this.service.deletePeliculaById(id);
     }
 }

@@ -1,8 +1,12 @@
+import { IsString, IsNotEmpty } from 'class-validator';
+
 export class ClasificacionInput {
-  nombre: string;
+    @IsString()
+    @IsNotEmpty()
+    nombre: string;
 }
 
 export class ClasificacionResponse {
-  id: number;
-  nombre: string;
+    id: number;
+    nombre: string;
 }
