@@ -15,7 +15,7 @@ export class ClasificacionService {
     /* Helpers */
     private toResponse(c: Clasificacion): ClasificacionResponse {
         return {
-            id: (c as any).idClasificacion, // PK real
+            id: c.id, // PK real
             nombre: c.nombre,
         };
     }
@@ -42,6 +42,7 @@ export class ClasificacionService {
             skip,
             take: quantity,
         });
+
         return list.map((c) => this.toResponse(c));
     }
 
