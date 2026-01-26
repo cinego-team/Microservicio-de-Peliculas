@@ -8,6 +8,7 @@ import {
     Post,
     Put,
     Query,
+    Headers
 } from '@nestjs/common';
 import { ParseIntPipe } from '@nestjs/common';
 import { PeliculaService } from './pelicula.service';
@@ -20,8 +21,8 @@ export class PeliculaController {
     // ===== ADMIN =====
 
     @Get('admin/all')
-    getAllAdmin() {
-        return this.service.getPeliculasCompleto();
+    getAllAdmin(@Headers('authorization') token: string) {
+        return this.service.getPeliculasCompleto(token);
     }
 
     @Get('admin/selec')

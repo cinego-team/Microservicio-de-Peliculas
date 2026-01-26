@@ -316,7 +316,7 @@ export class PeliculaService {
             titulo: p.titulo,
         }));
     }
-    async getPeliculasCompleto(): Promise<
+    async getPeliculasCompleto(token:string): Promise<
         Array<{
             id: number;
             titulo: string;
@@ -337,22 +337,22 @@ export class PeliculaService {
         }>
     > {
         const peliculas = await this.peliculaRepo.find({
-            relations: ['genero', 'clasificacion', 'estado'],
-        });
-        const respuesta = await Promise.all(
-            peliculas.map(async (p) => {
-                let empleado: EmpleadoDto | null = null;
+        relations: ['genero', 'clasificacion', 'estado'],
+    });
+    
+    const respuesta = await Promise.all(
+        peliculas.map(async (p) => {
+            let empleado: EmpleadoDto | null = null;
 
-                try {
-                    const resp = await axiosAPIUsuario.get<EmpleadoDto>(
-                        config.APIUsuariosUrls.getDatosEmpleadoById(
-                            p.empleadoId,
-                        ),
-                    );
-                    empleado = resp.data;
-                } catch {
-                    empleado = null;
-                }
+            try {
+                const resp = await axiosAPIUsuario.get<EmpleadoDto>(
+                    config.APIUsuariosUrls.getDatosEmpleadoById(p.empleadoId),
+                    { headers: { Authorization: token } }  // <-- AGREGAR ESTO
+                );
+                empleado = resp.data;
+            } catch {
+                empleado = null;
+            }
 
                 return {
                     id: p.id,
