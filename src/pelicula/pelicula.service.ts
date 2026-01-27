@@ -257,23 +257,11 @@ export class PeliculaService {
     async getPeliculaByIdForAdmin(id: number) {
         const pelicula = await this.peliculaRepo.findOne({
             where: { id },
-            relations: ['genero', 'clasificacion', 'estado', 'idioma'],
+            relations: ['genero', 'clasificacion', 'estado'],
         });
 
         if (!pelicula) {
             throw new NotFoundException(`No existe la película con ID ${id}`);
-        }
-        let empleado: EmpleadoDto | null = null;
-
-        try {
-            const resp = await axiosAPIUsuario.get<EmpleadoDto>(
-                config.APIUsuariosUrls.getDatosEmpleadoById(
-                    pelicula.empleadoId,
-                ),
-            );
-            empleado = resp.data;
-        } catch (error) {
-            empleado = null;
         }
         return {
             id: pelicula.id,
@@ -296,15 +284,6 @@ export class PeliculaService {
                 id: pelicula.estado.idEstado,
                 nombre: pelicula.estado.nombre,
             },
-
-            empleado: empleado
-                ? {
-                      id: empleado.id,
-                      legajo: empleado.legajo,
-                      nombre: empleado.nombre,
-                      apellido: empleado.apellido,
-                  }
-                : null,
         };
     }
     async getPeliculasParaSelec(): Promise<{ id: number; titulo: string }[]> {
