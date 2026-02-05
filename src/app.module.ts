@@ -18,7 +18,7 @@ import { Clasificacion } from './entities/clasificacion.entity';
         ssl: { rejectUnauthorized: false },
         autoLoadEntities: true,
         entities: [Pelicula, Genero, Estado, Clasificacion],
-        synchronize: false,
+        synchronize: true,
     }),
         PeliculaModule,
         GeneroModule,
