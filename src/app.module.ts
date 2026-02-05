@@ -14,13 +14,11 @@ import { Clasificacion } from './entities/clasificacion.entity';
 @Module({
     imports: [TypeOrmModule.forRoot({
         type: 'postgres',
-        host: 'localhost',
-        port: 5432,
-        database: 'mspeliculas',
-        username: 'postgres',
-        password: 'grupou',
+        url: process.env.PG_MSpeliculas,
+        ssl: { rejectUnauthorized: false },
+        autoLoadEntities: true,
         entities: [Pelicula, Genero, Estado, Clasificacion],
-        synchronize: true,
+        synchronize: false,
     }),
         PeliculaModule,
         GeneroModule,
