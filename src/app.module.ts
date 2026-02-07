@@ -14,7 +14,7 @@ import { Clasificacion } from './entities/clasificacion.entity';
 @Module({
     imports: [TypeOrmModule.forRoot({
         type: 'postgres',
-        url: process.env.PG_MSpeliculas,
+        url: process.env.PG_MSPELICULAS,
         ssl: { rejectUnauthorized: false },
         autoLoadEntities: true,
         entities: [Pelicula, Genero, Estado, Clasificacion],
@@ -29,25 +29,3 @@ import { Clasificacion } from './entities/clasificacion.entity';
     providers: [AppService],
 })
 export class AppModule { }
-
-//dejo este aca por las dudas
-
-// imports: [
-//     TypeOrmModule.forRoot({
-//       type: 'postgres',
-//       host: 'localhost',
-//       port: 5432,
-//       database: 'peliculasbd',
-//       username: 'postgres',
-//       password: 'postgres',
-//       entities: [Pelicula, Idioma, Genero, Estado, Clasificacion],
-//       synchronize: true,
-//     }),
-//     PeliculaModule,
-//     IdiomaModule,
-//     GeneroModule,
-//     EstadoModule,
-//     ClasificacionModule,
-//   ],
-//   controllers: [AppController],
-//   providers: [AppService],
