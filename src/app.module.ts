@@ -12,14 +12,15 @@ import { Estado } from './entities/estado.entity';
 import { Clasificacion } from './entities/clasificacion.entity';
 
 @Module({
-    imports: [TypeOrmModule.forRoot({
-        type: 'postgres',
-        url: process.env.PG_MSPELICULAS,
-        ssl: { rejectUnauthorized: false },
-        autoLoadEntities: true,
-        entities: [Pelicula, Genero, Estado, Clasificacion],
-        synchronize: false,
-    }),
+    imports: [
+        TypeOrmModule.forRoot({
+            port: +process.env.PUERTO_BD!,
+            database: process.env.PG_DATABASE_MS_USUARIOS,
+            username: process.env.PG_USERNAME,
+            password: process.env.PG_PASSWORD,
+            synchronize: true,
+            entities: [Pelicula, Genero, Estado, Clasificacion],
+        }),
         PeliculaModule,
         GeneroModule,
         EstadoModule,
