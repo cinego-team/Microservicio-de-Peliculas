@@ -10,11 +10,18 @@ import { Pelicula } from './entities/pelicula.entity';
 import { Genero } from './entities/genero.entity';
 import { Estado } from './entities/estado.entity';
 import { Clasificacion } from './entities/clasificacion.entity';
+import { ConfigModule } from '@nestjs/config';
+
 
 @Module({
     imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+        }),
         TypeOrmModule.forRoot({
-            port: +process.env.PUERTO_BD!,
+            type: 'postgres',
+            host: 'localhost',
+            port: Number(process.env.PUERTO_BD),
             database: process.env.PG_DATABASE_MS_USUARIOS,
             username: process.env.PG_USERNAME,
             password: process.env.PG_PASSWORD,
