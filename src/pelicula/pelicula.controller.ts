@@ -16,12 +16,16 @@ import { PeliculaInput, PeliculaInputAdmin } from './pelicula.dto';
 
 @Controller('pelicula')
 export class PeliculaController {
-    constructor(private readonly service: PeliculaService) {}
+    constructor(private readonly service: PeliculaService) { }
     //  ADMIN
 
     @Get('admin/all')
-    getAllAdmin(@Headers('authorization') token: string) {
-        return this.service.getPeliculasCompleto(token);
+    getAllAdmin(
+        @Headers('authorization') token: string,
+        @Query('page') page: number,
+        @Query('quantity') quantity: number
+    ) {
+        return this.service.getPeliculasCompleto(token, page, quantity);
     }
 
     @Get('admin/selec')

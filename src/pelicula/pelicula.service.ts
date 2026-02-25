@@ -24,7 +24,7 @@ export class PeliculaService {
         @InjectRepository(Clasificacion)
         private clasificacionRepo: Repository<Clasificacion>,
         @InjectRepository(Estado) private estadoRepo: Repository<Estado>,
-    ) {}
+    ) { }
 
     private toResponse(p: Pelicula): PeliculaResponse {
         return {
@@ -181,7 +181,7 @@ export class PeliculaService {
             titulo: p.titulo,
         }));
     }
-    async getPeliculasCompleto(token: string): Promise<
+    async getPeliculasCompleto(token: string, page, quantity): Promise<
         Array<{
             id: number;
             titulo: string;
@@ -201,8 +201,12 @@ export class PeliculaService {
             } | null;
         }>
     > {
+        const skip = (page - 1) * quantity;
         const peliculas = await this.peliculaRepo.find({
             relations: ['genero', 'clasificacion', 'estado'],
+            order: { titulo: 'ASC' },
+            skip,
+            take: quantity,
         });
 
         const respuesta = await Promise.all(
@@ -247,11 +251,11 @@ export class PeliculaService {
 
                     empleado: empleado
                         ? {
-                              id: empleado.id,
-                              legajo: empleado.legajo,
-                              nombre: empleado.nombre,
-                              apellido: empleado.apellido,
-                          }
+                            id: empleado.id,
+                            legajo: empleado.legajo,
+                            nombre: empleado.nombre,
+                            apellido: empleado.apellido,
+                        }
                         : null,
                 };
             }),
