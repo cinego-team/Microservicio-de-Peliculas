@@ -40,14 +40,6 @@ export class EstadoController {
         return this.service.updateEstado(id, dto);
     }
 
-    @Patch(':id')
-    updatePartial(
-        @Param('id', ParseIntPipe) id: number,
-        @Body() dto: Partial<EstadoInput>,
-    ) {
-        return this.service.partialUpdateEstado(id, dto);
-    }
-
     @Delete('admin/:id')
     delete(@Param('id', ParseIntPipe) id: number) {
         return this.service.deleteEstadoById(id);

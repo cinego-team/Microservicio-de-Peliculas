@@ -57,34 +57,7 @@ export class PeliculaService {
 
         return { genero, clasificacion, estado };
     }
-
-    async newPelicula(datos: PeliculaInput): Promise<PeliculaResponse> {
-        const rels = await this.resolveRelationsByIds(datos);
-
-        const pelicula = this.peliculaRepo.create({
-            titulo: datos.titulo,
-            sinopsis: datos.sinopsis,
-            director: datos.director,
-            duracion: datos.duracion,
-            fechaEstreno: datos.fechaEstreno,
-            urlImagen: datos.urlImagen,
-            ...rels,
-        });
-
-        await this.peliculaRepo.save(pelicula);
-
-        const saved = await this.peliculaRepo.findOne({
-            where: { id: pelicula.id },
-            relations: {
-                genero: true,
-                clasificacion: true,
-                estado: true,
-            },
-        });
-        if (!saved) throw new Error('404 Pelicula not found after create.');
-        return this.toResponse(saved);
-    }
-
+    //metodos para el frontend de cliente
     async getAllPeliculas(): Promise<PeliculaResponse[]> {
         const pelis = await this.peliculaRepo.find({
             relations: {
@@ -108,93 +81,6 @@ export class PeliculaService {
         });
         if (!p) throw new Error('404 Pelicula not found.');
         return this.toResponse(p);
-    }
-
-    async updatePelicula(
-        id: number,
-        datos: PeliculaInput,
-    ): Promise<PeliculaResponse> {
-        const p = await this.peliculaRepo.findOne({ where: { id } });
-        if (!p) throw new Error('404 Pelicula not found.');
-
-        const rels = await this.resolveRelationsByIds(datos);
-
-        p.titulo = datos.titulo;
-        p.sinopsis = datos.sinopsis;
-        p.director = datos.director;
-        p.duracion = datos.duracion;
-        p.fechaEstreno = datos.fechaEstreno;
-        p.genero = rels.genero;
-        p.clasificacion = rels.clasificacion;
-        p.estado = rels.estado;
-        p.urlImagen = datos.urlImagen;
-
-        await this.peliculaRepo.save(p);
-
-        const updated = await this.peliculaRepo.findOne({
-            where: { id },
-            relations: {
-                genero: true,
-                clasificacion: true,
-                estado: true,
-            },
-        });
-        if (!updated) throw new Error('404 Pelicula not found after update.');
-        return this.toResponse(updated);
-    }
-
-    async partialUpdatePelicula(
-        id: number,
-        datos: Partial<PeliculaInput>,
-    ): Promise<PeliculaResponse> {
-        const p = await this.peliculaRepo.findOne({
-            where: { id },
-            relations: {
-                genero: true,
-                clasificacion: true,
-                estado: true,
-            },
-        });
-        if (!p) throw new Error('404 Pelicula not found.');
-
-        if (datos.titulo !== undefined) p.titulo = datos.titulo;
-        if (datos.sinopsis !== undefined) p.sinopsis = datos.sinopsis;
-        if (datos.director !== undefined) p.director = datos.director;
-        if (datos.duracion !== undefined) p.duracion = datos.duracion;
-        if (datos.fechaEstreno !== undefined)
-            p.fechaEstreno = datos.fechaEstreno;
-
-        if (datos.genero !== undefined) {
-            const genero = await this.generoRepo.findOne({
-                where: { nombre: datos.genero },
-            });
-            if (!genero) throw new Error('404 Genero not found.');
-            p.genero = genero;
-        }
-        if (datos.clasificacion !== undefined) {
-            const clas = await this.clasificacionRepo.findOne({
-                where: { nombre: datos.clasificacion },
-            });
-            if (!clas) throw new Error('404 Clasificacion not found.');
-            p.clasificacion = clas;
-        }
-        if (datos.estado !== undefined) {
-            const est = await this.estadoRepo.findOne({
-                where: { nombre: datos.estado },
-            });
-            if (!est) throw new Error('404 Estado not found.');
-            p.estado = est;
-        }
-
-        await this.peliculaRepo.save(p);
-        return this.toResponse(p);
-    }
-
-    async deletePeliculaById(id: number): Promise<{ message: string }> {
-        const p = await this.peliculaRepo.findOne({ where: { id } });
-        if (!p) throw new Error('404 Pelicula not found.');
-        await this.peliculaRepo.remove(p);
-        return { message: 'Deleted' };
     }
 
     async ponerEnCartelera(id: number): Promise<PeliculaResponse> {
@@ -295,7 +181,7 @@ export class PeliculaService {
             titulo: p.titulo,
         }));
     }
-    async getPeliculasCompleto(token:string): Promise<
+    async getPeliculasCompleto(token: string): Promise<
         Array<{
             id: number;
             titulo: string;
@@ -316,22 +202,24 @@ export class PeliculaService {
         }>
     > {
         const peliculas = await this.peliculaRepo.find({
-        relations: ['genero', 'clasificacion', 'estado'],
-    });
-    
-    const respuesta = await Promise.all(
-        peliculas.map(async (p) => {
-            let empleado: EmpleadoDto | null = null;
+            relations: ['genero', 'clasificacion', 'estado'],
+        });
 
-            try {
-                const resp = await axiosAPIUsuario.get<EmpleadoDto>(
-                    config.APIUsuariosUrls.getDatosEmpleadoById(p.empleadoId),
-                    { headers: { Authorization: token } }  // <-- AGREGAR ESTO
-                );
-                empleado = resp.data;
-            } catch {
-                empleado = null;
-            }
+        const respuesta = await Promise.all(
+            peliculas.map(async (p) => {
+                let empleado: EmpleadoDto | null = null;
+
+                try {
+                    const resp = await axiosAPIUsuario.get<EmpleadoDto>(
+                        config.APIUsuariosUrls.getDatosEmpleadoById(
+                            p.empleadoId,
+                        ),
+                        { headers: { Authorization: token } }, // <-- AGREGAR ESTO
+                    );
+                    empleado = resp.data;
+                } catch {
+                    empleado = null;
+                }
 
                 return {
                     id: p.id,
@@ -372,7 +260,6 @@ export class PeliculaService {
         return respuesta;
     }
     async createPeliculaAdmin(dto: PeliculaInputAdmin): Promise<void> {
-        // 1. Buscar relaciones
         const genero = await this.generoRepo.findOne({
             where: { idGenero: dto.genero.id },
         });
@@ -443,5 +330,11 @@ export class PeliculaService {
         pelicula.empleadoId = dto.empleado.id;
 
         return await this.peliculaRepo.save(pelicula);
+    }
+    async deletePeliculaById(id: number): Promise<{ message: string }> {
+        const p = await this.peliculaRepo.findOne({ where: { id } });
+        if (!p) throw new Error('404 Pelicula not found.');
+        await this.peliculaRepo.remove(p);
+        return { message: 'Deleted' };
     }
 }

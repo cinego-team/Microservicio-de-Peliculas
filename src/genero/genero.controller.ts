@@ -40,14 +40,6 @@ export class GeneroController {
         return this.service.updateGenero(id, dto);
     }
 
-    @Patch(':id')
-    updatePartial(
-        @Param('id', ParseIntPipe) id: number,
-        @Body() dto: Partial<GeneroInput>,
-    ) {
-        return this.service.partialUpdateGenero(id, dto);
-    }
-
     @Delete('admin/:id')
     delete(@Param('id', ParseIntPipe) id: number) {
         return this.service.deleteGeneroById(id);

@@ -68,20 +68,6 @@ export class ClasificacionService {
         return this.toResponse(clas);
     }
 
-    /* Partial update */
-    async partialUpdateClasificacion(
-        id: number,
-        datos: Partial<ClasificacionInput>,
-    ): Promise<ClasificacionResponse> {
-        const clas = await this.clasificacionRepo.findOne({
-            where: { id: id },
-        });
-        if (!clas) throw new Error('404 Clasificacion not found.');
-        if (datos.nombre !== undefined) clas.nombre = datos.nombre;
-        await this.clasificacionRepo.save(clas);
-        return this.toResponse(clas);
-    }
-
     /* Delete */
     async deleteClasificacionById(id: number): Promise<{ message: string }> {
         const clas = await this.clasificacionRepo.findOne({

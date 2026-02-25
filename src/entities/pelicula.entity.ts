@@ -35,8 +35,6 @@ export class Pelicula {
     @Column({ name: 'empleado_responsable' })
     empleadoId: number;
 
-    // Relaciones (FK en Pelicula) => ManyToOne
-
     @ManyToOne(() => Genero, { nullable: false, eager: false })
     @JoinColumn({ name: 'genero_id' })
     genero: Genero;

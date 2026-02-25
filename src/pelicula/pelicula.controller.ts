@@ -8,7 +8,7 @@ import {
     Post,
     Put,
     Query,
-    Headers
+    Headers,
 } from '@nestjs/common';
 import { ParseIntPipe } from '@nestjs/common';
 import { PeliculaService } from './pelicula.service';
@@ -17,8 +17,7 @@ import { PeliculaInput, PeliculaInputAdmin } from './pelicula.dto';
 @Controller('pelicula')
 export class PeliculaController {
     constructor(private readonly service: PeliculaService) {}
-
-    // ===== ADMIN =====
+    //  ADMIN
 
     @Get('admin/all')
     getAllAdmin(@Headers('authorization') token: string) {
@@ -55,11 +54,6 @@ export class PeliculaController {
 
     // ===== GENERALES =====
 
-    @Post('new')
-    new(@Body() dto: PeliculaInput) {
-        return this.service.newPelicula(dto);
-    }
-
     @Get()
     getAll() {
         return this.service.getAllPeliculas();
@@ -68,14 +62,6 @@ export class PeliculaController {
     @Get(':id')
     getById(@Param('id', ParseIntPipe) id: number) {
         return this.service.getPeliculaById(id);
-    }
-
-    @Put(':id')
-    updateFull(
-        @Param('id', ParseIntPipe) id: number,
-        @Body() dto: PeliculaInput,
-    ) {
-        return this.service.updatePelicula(id, dto);
     }
 
     @Patch(':id/poner-en-cartelera')

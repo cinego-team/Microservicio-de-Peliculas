@@ -19,7 +19,6 @@ export class ClasificacionController {
 
     @Post('admin/new')
     new(@Body() dto: ClasificacionInput) {
-        console.log('📦 BODY RECIBIDO:', dto);
         return this.service.newClasificacion(dto);
     }
 
@@ -42,14 +41,6 @@ export class ClasificacionController {
         @Body() dto: ClasificacionInput,
     ) {
         return this.service.updateClasificacion(id, dto);
-    }
-
-    @Patch(':id')
-    updatePartial(
-        @Param('id', ParseIntPipe) id: number,
-        @Body() dto: Partial<ClasificacionInput>,
-    ) {
-        return this.service.partialUpdateClasificacion(id, dto);
     }
 
     @Delete('admin/:id')
